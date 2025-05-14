@@ -37,19 +37,18 @@ def merge():
     delivery_df = pd.read_excel(delivery_file)
     tracking_wb = openpyxl.load_workbook(tracking_file, data_only=True)
 
-    # 자동 시트 탐색 (주문번호와 운송장번호가 있는 시트)
     found = False
     for sheetname in tracking_wb.sheetnames:
         ws = tracking_wb[sheetname]
         headers = [cell.value for cell in ws[1]]
-        if "주문번호" in headers and "운송장번호" in headers:
-            주문번호_idx = headers.index("주문번호")
-            운송장_idx = headers.index("운송장번호")
+        if "상품주문번호" in headers and "등기번호" in headers:
+            주문번호_idx = headers.index("상품주문번호")
+            운송장_idx = headers.index("등기번호")
             found = True
             break
 
     if not found:
-        return "❌ 업로드한 운송장 파일에서 '주문번호'와 '운송장번호' 열을 찾을 수 없습니다."
+        return "❌ 업로드한 운송장 파일에서 '상품주문번호'와 '등기번호' 열을 찾을 수 없습니다."
 
     tracking_dict = {}
     for row in ws.iter_rows(min_row=2, values_only=True):
